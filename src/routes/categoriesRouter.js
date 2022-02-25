@@ -1,4 +1,4 @@
 const categoriesRouter = Router();
 
-categoriesRouter.get('/categories', postCategories);
+categoriesRouter.get('/categories', getCategories);
 categoriesRouter.post('/categories', validateCategoriesSchema, postCategories);
