@@ -4,3 +4,5 @@ const gamesRouter = Router();
 
 gamesRouter.get('/games', getGames);
 gamesRouter.post('/games', validateGameSchema, postGames);
+
+export default gamesRouter;
