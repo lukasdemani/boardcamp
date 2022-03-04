@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import connection from '../database.js';
 
 export async function getRentals (req, res) {
@@ -26,10 +27,20 @@ export async function getRental (req, res) {
 
 export async function postRental(req, res) {
     const rental = req.body;
+    const rentDate = dayjs().format('YYYY-MM-DD');
+    const result = await connection.query(`
+      SELECT "pricePerDay" 
+        FROM games
+        WHERE id=$1`, [rental.gameId]);
+    console.log(result.rows)
+    const originalPrice = rental.daysRented * 2;
+    const returnDate = null;
+    const delayFee = null;
+
     try {
-        const rental = await connection.query(
-            `INSERT INTO games ("customerId", "gameId", "rentDate", "daysRented", "returnDate", "originalPrice", "delayFee") 
-                VALUES ($1, $2, $3, $4, $5, $6, $7)`, [rental.customerId, rental.gameId, rental.rentDate, rental.daysRented, rental.returnDate, rental.originalPrice, rental.delayFee]);
+        const result = await connection.query(
+            `INSERT INTO rentals ("customerId", "gameId", "rentDate", "daysRented", "returnDate", "originalPrice", "delayFee") 
+                VALUES ($1, $2, $3, $4, $5, $6, $7)`, [rental.customerId, rental.gameId, rentDate, rental.daysRented, returnDate, originalPrice, delayFee]);
         res.sendStatus(200);
       } catch (err) {
         console.error(err);

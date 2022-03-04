@@ -1,5 +1,7 @@
+import rentalSchema from "../schema/rentalSchema.js";
+
 export async function validateRentalSchema(req, res, next){
-    const category = req.body;
+    const rental = req.body;
 
     const validation = rentalSchema.validate(rental);
     if (validation.error) {
