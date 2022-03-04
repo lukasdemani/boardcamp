@@ -1,9 +1,8 @@
-
 import connection from '../database.js';
 
 export async function getGames (req, res) {
   try {
-    const categories = await connection.query(
+    const games = await connection.query(
         `SELECT * FROM games`)
     res.send(games.rows);
   } catch (err) {
@@ -25,12 +24,12 @@ export async function getGame (req, res) {
     }
   };
 
-export async function postGame(req, res) {
+export async function postGame (req, res) {
     const game = req.body;
     try {
-        const game = await connection.query(
-            `INSERT INTO games (name) 
-                VALUES (${game})`)
+        const result = await connection.query(
+            `INSERT INTO games (name, image, "stockTotal", "categoryId", "pricePerDay") 
+                VALUES ($1, $2, $3, $4, $5)`, [game.name, game.image, game.stockTotal, game.categoryId, game.pricePerDay]);
         res.sendStatus(200);
       } catch (err) {
         console.error(err);
