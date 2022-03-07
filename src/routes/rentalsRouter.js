@@ -6,7 +6,7 @@ const rentalsRouter = Router();
 rentalsRouter.get('/rentals', getRentals);
 rentalsRouter.post('/rentals', validateRentalSchema, postRental);
 rentalsRouter.post('/rentals/:id/return', finishRental);
-rentalsRouter.delete('/rentals/:id', validateRentalSchema, deleteRental);
+rentalsRouter.delete('/rentals/:id', deleteRental);
 rentalsRouter.get('/rentals/metrics', getMetrics);
 
 export default rentalsRouter;

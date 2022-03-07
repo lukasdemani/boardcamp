@@ -2,7 +2,7 @@ import connection from '../database.js';
 import queryBuilder from './queryBuilder.js';
 
 export async function getCategories (req, res) {
-  const queryString = queryBuilder(req.query.offset, req.query.limit, req.query.order, req.query.desc);
+  const queryString = queryBuilder( { ...req.query });
 
   try {
     

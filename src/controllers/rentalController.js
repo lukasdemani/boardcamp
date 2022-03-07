@@ -112,6 +112,14 @@ export async function deleteRental (req, res) {
   id = parseInt(id)
 
   try {
+
+    const resultId = await connection.query(`
+            SELECT id FROM games
+                WHERE id=$1`, [id]);
+        if (resultId.rowCount === 0) {
+            return res.sendStatus(400);
+        }
+
     const result = await connection.query(
       `DELETE FROM rentals WHERE id = $1`,
       [id]);

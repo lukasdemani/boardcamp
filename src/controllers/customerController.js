@@ -5,12 +5,6 @@ export async function getCustomers (req, res) {
   const queryString = queryBuilder({ ...req.query });
 
   try {
-    console.log(`SELECT c.id, c.name, c.phone, c.cpf, c.birthday, 
-    (SELECT COUNT (r."customerId")
-      FROM rentals r  
-      WHERE r."customerId" = c.id) AS "rentalsCount"
-  FROM customers c 
-  ${queryString}`)
     const customers = await connection.query(
         `SELECT c.id, c.name, c.phone, c.cpf, c.birthday, 
           (SELECT COUNT (r."customerId")
