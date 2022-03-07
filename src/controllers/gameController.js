@@ -3,10 +3,8 @@ import queryBuilder from './queryBuilder.js';
 
 export async function getGames (req, res) {
   const queryString = queryBuilder({ ...req.query });
-  const q = req.query.name;
   
   try {
-    if (!q){
       const games = await connection.query(
           `SELECT g.id, g.name, g.image, g."stockTotal", g."categoryId", g."pricePerDay", c.name as "categoryName",
               (SELECT COUNT (r."gameId")
@@ -18,21 +16,7 @@ export async function getGames (req, res) {
           ${queryString}`
              )
       res.send(games.rows);
-    }else{
-      const search = q+"%";
       
-      const games = await connection.query(
-        `SELECT g.id, g.name, g.image, g."stockTotal", g."categoryId", g."pricePerDay", c.name as "categoryName",
-            (SELECT COUNT (r."gameId")
-            FROM rentals r
-            WHERE r."gameId" = g.id) AS "rentalsCount"
-          FROM games g
-        JOIN categories c
-          ON g."categoryId" = c.id
-        WHERE LOWER (g.name) LIKE $1
-        ${queryString}`, [search])
-      res.send(games.rows);
-    }
   } catch (err) {
     console.error(err);
     res.sendStatus(500);

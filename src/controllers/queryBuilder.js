@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-export default function queryBuilder({ offset='', limit='', orderBy='', orderType='', status='', startDate='', customerId='', gameId='', cpf='' }){ 
+export default function queryBuilder({ offset='', limit='', orderBy='', orderType='', status='', startDate='', customerId='', gameId='', cpf='' , name=''}){ 
     if (offset) {
         offset = `OFFSET ${offset}`;
     }
@@ -65,9 +65,17 @@ export default function queryBuilder({ offset='', limit='', orderBy='', orderTyp
 
     if (cpf) {
         if (whereString) {
-            whereString += ` AND (c.cpf) LIKE ${cpf}% `
+            whereString += ` AND (c.cpf) LIKE '${cpf}%' `
         }else{
             whereString += `WHERE (c.cpf) LIKE '${cpf}%' `
+        }
+    }
+
+    if (name) {
+        if (whereString) {
+            whereString += ` AND (g.name) LIKE '${name}%' `
+        }else{
+            whereString += `WHERE LOWER (g.name) LIKE '${name}%'`
         }
     }
 
